@@ -28,20 +28,40 @@ const CONFIG_ENV_ALTERNATIVES = {
     },
 };
 
-CONFIG_ENV_ALTERNATIVES["web/acp.js"]["sys.log"] = CONFIG_ENV_ALTERNATIVES["logger.js"]["sys.log"];
-CONFIG_ENV_ALTERNATIVES["web/acp.js"]["error.log"] = CONFIG_ENV_ALTERNATIVES["logger.js"]["error.log"];
-CONFIG_ENV_ALTERNATIVES["web/acp.js"]["events.log"] = CONFIG_ENV_ALTERNATIVES["logger.js"]["events.log"];
-CONFIG_ENV_ALTERNATIVES["web/acp.js"]["http.log"] = CONFIG_ENV_ALTERNATIVES["web/webserver.js"]["http.log"];
-CONFIG_ENV_ALTERNATIVES["web/acp.js"]["chanlogs"] = CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"];
-CONFIG_ENV_ALTERNATIVES["server.js"]["chanlogs"] = CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"];
-CONFIG_ENV_ALTERNATIVES["setuid.js"]["chanlogs"] = CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"];
+CONFIG_ENV_ALTERNATIVES["web/acp.js"] = {
+    "sys.log":    CONFIG_ENV_ALTERNATIVES["logger.js"]["sys.log"],
+    "error.log":  CONFIG_ENV_ALTERNATIVES["logger.js"]["error.log"],
+    "events.log": CONFIG_ENV_ALTERNATIVES["logger.js"]["events.log"],
+    "http.log":   CONFIG_ENV_ALTERNATIVES["web/webserver.js"]["http.log"],
+    "chanlogs":   CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"]
+};
+
+CONFIG_ENV_ALTERNATIVES["server.js"] = {
+    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"]
+};
+
+CONFIG_ENV_ALTERNATIVES["setuid.js"] = {
+    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"]
+};
 
 function envVarFilenameOK(envVarName) {
-    if (process.env(envVarName) != null) {
+    console.log("envVarFilenameOK:", envVarName);
+    if (process.env[envVarName] != null) {
+        console.log("envVarFilenameOK - process.env has this varname");
         let fileLocation = process.env[envVarName];
 
         if (fs.existsSync(fileLocation)) {
             return fileLocation;
+        } else {
+            console.log("File does not exist. attmpting creation");
+            try {
+                fs.writeFileSync(fileLocation, "");
+                console.log(fileLocation, "created ok!");
+                return fileLocation;
+            } catch (e) {
+                console.log(fileLocation, "ERROR CREATING:");
+                console.error(e);
+            }
         }
     }
 
@@ -65,8 +85,17 @@ function checkEnvVars() {
 
 const KNOWN_ALTERNATIVES = checkEnvVars();
 
+Object.entries(KNOWN_ALTERNATIVES)
+    .forEach(([moduleName, filenameEnvMap]) => {
+        Object.entries(filenameEnvMap)
+            .forEach(([configFile, envVarValue]) => {
+                console.log(moduleName, configFile, envVarValue);
+            })
+    });
+
 function tryFromEnv(moduleName, configFileName, defaultPath) {
     let filepath = KNOWN_ALTERNATIVES[moduleName][configFileName];
+    console.log("tryFromEnv:", moduleName, configFileName, filepath);
 
     if (filepath != null) {
         return filepath;
