@@ -1,5 +1,6 @@
 var fs = require("fs");
 var path = require("path");
+var tryFromEnv = require("./environment_variables").tryFromEnv;
 import { Logger as JsliLogger, LogLevel } from '@calzoneman/jsli';
 import jsli from '@calzoneman/jsli';
 
@@ -54,9 +55,9 @@ function makeConsoleLogger(filename) {
     return log;
 }
 
-var errlog = makeConsoleLogger(path.join(__dirname, "..", "error.log"));
-var syslog = makeConsoleLogger(path.join(__dirname, "..", "sys.log"));
-var eventlog = makeConsoleLogger(path.join(__dirname, "..", "events.log"));
+var errlog = makeConsoleLogger(tryFrom("logger.js", "error.log", path.join(__dirname, "..", "error.log")));
+var syslog = makeConsoleLogger(tryFrom("logger.js", "sys.log", path.join(__dirname, "..", "sys.log")));
+var eventlog = makeConsoleLogger(tryFrom("logger.js", "events.log", path.join(__dirname, "..", "events.log")));
 
 exports.Logger = Logger;
 exports.errlog = errlog;

@@ -14,10 +14,11 @@ import session from '../session';
 const verifySessionAsync = require('bluebird').promisify(session.verifySession);
 
 const LOGGER = require('@calzoneman/jsli')('webserver');
+const tryFromEnv = require("../environment_variables").tryFromEnv;
 
 function initializeLog(app) {
     const logFormat = ':real-address - :remote-user [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"';
-    const logPath = path.join(__dirname, '..', '..', 'http.log');
+    const logPath = tryFromEnv("web/webserver.js", "http.log", path.join(__dirname, "..", "..", "http.log"));
     const outputStream = fs.createWriteStream(logPath, {
         flags: 'a', // append to existing file
         encoding: 'utf8'
@@ -176,7 +177,7 @@ module.exports = {
         }
 
         if (webConfig.getEnableMinification()) {
-            const cacheDir = path.join(__dirname, '..', '..', 'www', 'cache');
+            const cacheDir = tryFromEnv("web/webserver.js", "cache", path.join(__dirname, '..', '..', 'www', 'cache'));
             if (!fs.existsSync(cacheDir)) {
                 fs.mkdirSync(cacheDir);
             }

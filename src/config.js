@@ -1,6 +1,7 @@
 var path = require("path");
 var net = require("net");
 var YAML = require("yamljs");
+var tryFromEnv = require("./environment_variables").tryFromEnv;
 
 import { loadFromToml } from './configuration/configloader';
 import { CamoConfig } from './configuration/camoconfig';
@@ -139,7 +140,7 @@ let captchaConfig = new CaptchaConfig();
  * Initializes the configuration from the given YAML file
  */
 exports.load = function (file) {
-    let absPath = path.join(__dirname, "..", file);
+    let absPath = tryFromEnv("config.js", file, path.join(__dirname, "..", file));
     try {
         cfg = YAML.load(absPath);
     } catch (e) {

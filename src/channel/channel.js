@@ -4,6 +4,7 @@ var fs = require("fs");
 var path = require("path");
 var sio = require("socket.io");
 var db = require("../database");
+var tryFromEnv = require("../environment_variables").tryFromEnv;
 import * as ChannelStore from '../channel-storage/channelstore';
 import { ChannelStateSizeError } from '../errors';
 import { EventEmitter } from 'events';
@@ -81,7 +82,8 @@ function Channel(name) {
     this.modules = {};
     this.logger = new Logger.Logger(
         path.join(
-            __dirname, "..", "..", "chanlogs", this.uniqueName + ".log"
+          tryFromEnv("channel/channel.js", "chanlogs", path.join(__dirname, "..", "..", "chanlogs")),
+          this.uniqueName + ".log"
         )
     );
     this.users = [];

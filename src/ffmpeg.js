@@ -5,6 +5,7 @@ var https = require("https");
 var http = require("http");
 var urlparse = require("url");
 var path = require("path");
+var tryFromEnv = require("./environment_variables").tryFromEnv;
 
 import { callOnce } from './util/call-once';
 
@@ -101,7 +102,13 @@ function fflog() { }
 /* eslint no-func-assign: off */
 function initFFLog() {
     if (fflog.initialized) return;
-    var logger = new Logger.Logger(path.resolve(__dirname, "..", "ffmpeg.log"));
+    var logger = new Logger.Logger(
+        tryFromEnv(
+            "ffmpeg.js",
+            "ffmpeg.log",
+            path.resolve(__dirname, "..", "ffmpeg.log")
+        )
+    );
     fflog = function () {
         logger.log.apply(logger, arguments);
     };

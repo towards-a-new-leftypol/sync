@@ -2,6 +2,7 @@ const VERSION = require("../package.json").version;
 var singleton = null;
 var Config = require("./config");
 var Promise = require("bluebird");
+var tryFromEnv = require("./environment_variables").tryFromEnv;
 import * as ChannelStore from './channel-storage/channelstore';
 import { EventEmitter } from 'events';
 
@@ -10,7 +11,7 @@ const LOGGER = require('@calzoneman/jsli')('server');
 module.exports = {
     init: function () {
         LOGGER.info("Starting CyTube v%s", VERSION);
-        var chanlogpath = path.join(__dirname, "../chanlogs");
+        var chanlogpath = tryFromEnv("server.js", "chanlogs", path.join(__dirname, "../chanlogs"));
         fs.exists(chanlogpath, function (exists) {
             exists || fs.mkdirSync(chanlogpath);
         });
