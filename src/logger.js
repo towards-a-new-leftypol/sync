@@ -55,9 +55,9 @@ function makeConsoleLogger(filename) {
     return log;
 }
 
-var errlog = makeConsoleLogger(tryFrom("logger.js", "error.log", path.join(__dirname, "..", "error.log")));
-var syslog = makeConsoleLogger(tryFrom("logger.js", "sys.log", path.join(__dirname, "..", "sys.log")));
-var eventlog = makeConsoleLogger(tryFrom("logger.js", "events.log", path.join(__dirname, "..", "events.log")));
+var errlog = makeConsoleLogger(tryFromEnv("logger.js", "error.log", path.join(__dirname, "..", "error.log")));
+var syslog = makeConsoleLogger(tryFromEnv("logger.js", "sys.log", path.join(__dirname, "..", "sys.log")));
+var eventlog = makeConsoleLogger(tryFromEnv("logger.js", "events.log", path.join(__dirname, "..", "events.log")));
 
 exports.Logger = Logger;
 exports.errlog = errlog;
