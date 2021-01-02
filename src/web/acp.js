@@ -3,6 +3,7 @@ var fs = require("fs");
 var webserver = require("./webserver");
 var sendPug = require("./pug").sendPug;
 var Logger = require("../logger");
+var tryFromEnv = require("../environment_variables").tryFromEnv;
 
 let ioConfig;
 
@@ -69,28 +70,28 @@ function readLog(res, file, length) {
  * Handles a request to read the syslog
  */
 function handleReadSyslog(req, res) {
-    readLog(res, path.join(__dirname, "..", "..", "sys.log"), 1048576);
+    readLog(res, tryFromEnv("web/acp.js", "sys.log", path.join(__dirname, "..", "..", "sys.log")), 1048576);
 }
 
 /**
  * Handles a request to read the error log
  */
 function handleReadErrlog(req, res) {
-    readLog(res, path.join(__dirname, "..", "..", "error.log"), 1048576);
+    readLog(res, tryFromEnv("web/acp.js", "error.log", path.join(__dirname, "..", "..", "error.log")), 1048576);
 }
 
 /**
  * Handles a request to read the http log
  */
 function handleReadHttplog(req, res) {
-    readLog(res, path.join(__dirname, "..", "..", "http.log"), 1048576);
+    readLog(res, tryFromEnv("web/acp.js", "http.log", path.join(__dirname, "..", "..", "http.log")), 1048576);
 }
 
 /**
  * Handles a request to read the event log
  */
 function handleReadEventlog(req, res) {
-    readLog(res, path.join(__dirname, "..", "..", "events.log"), 1048576);
+    readLog(res, tryFromEnv("web/acp.js", "events.log", path.join(__dirname, "..", "..", "events.log")), 1048576);
 }
 
 /**
@@ -101,7 +102,7 @@ function handleReadChanlog(req, res) {
         res.send(400);
         return;
     }
-    readLog(res, path.join(__dirname, "..", "..", "chanlogs", req.params.name + ".log"), 1048576);
+    readLog(res, path.join(tryFromEnv("web/acp.js", "chanlogs", path.join(__dirname, "..", "..", "chanlogs")), req.params.name + ".log"), 1048576);
 }
 
 module.exports = {

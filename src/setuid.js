@@ -2,11 +2,12 @@ var Config = require("./config");
 var fs = require("fs");
 var path = require("path");
 var execSync = require("child_process").execSync;
+var tryFromEnv = require("./environment_variables").tryFromEnv;
 
 const LOGGER = require('@calzoneman/jsli')('setuid');
 
 var needPermissionsFixed = [
-    path.join(__dirname, "..", "chanlogs"),
+    tryFromEnv("setuid.js", "chanlogs", path.join(__dirname, "..", "chanlogs")),
     path.join(__dirname, "..", "google-drive-subtitles")
 ];
 
