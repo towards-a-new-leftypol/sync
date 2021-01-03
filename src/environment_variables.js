@@ -27,7 +27,7 @@ const CONFIG_ENV_ALTERNATIVES = {
         "ffmpeg.log": "CYTUBE_FFMPEGLOG_LOCATION"
     },
     "google2vtt.js": {
-        "google-drive-subtitles": "CYTUBE_GOOGLE_DRIVE_SUBTITLES_LOCATION"
+        "google-drive-subtitles": "CYTUBE_GOOGLE_DRIVE_SUBTITLES_DIR"
     }
 };
 
