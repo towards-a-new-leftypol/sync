@@ -8,7 +8,7 @@ const LOGGER = require('@calzoneman/jsli')('setuid');
 
 var needPermissionsFixed = [
     tryFromEnv("setuid.js", "chanlogs", path.join(__dirname, "..", "chanlogs")),
-    path.join(__dirname, "..", "google-drive-subtitles")
+    tryFromEnv("setuid.js", "google-drive-subtitles", path.join(__dirname, "..", "google-drive-subtitles"))
 ];
 
 function fixPermissions(user, group) {

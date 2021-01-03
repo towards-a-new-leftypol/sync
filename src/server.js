@@ -16,7 +16,7 @@ module.exports = {
             exists || fs.mkdirSync(chanlogpath);
         });
 
-        var gdvttpath = path.join(__dirname, "../google-drive-subtitles");
+        var gdvttpath = tryFromEnv("server.js", "google-drive-subtitles", path.join(__dirname, "../google-drive-subtitles"));
         fs.exists(gdvttpath, function (exists) {
             exists || fs.mkdirSync(gdvttpath);
         });
