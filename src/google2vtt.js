@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var querystring = require('querystring');
 var crypto = require('crypto');
+var tryFromEnv = require("../environment_variables").tryFromEnv;
 
 const LOGGER = require('@calzoneman/jsli')('google2vtt');
 
@@ -16,7 +17,7 @@ function md5(input) {
 }
 
 var slice = Array.prototype.slice;
-var subtitleDir = path.resolve(__dirname, '..', 'google-drive-subtitles');
+var subtitleDir = tryFromEnv("google2vtt.js", "google-drive-subtitles", path.resolve(__dirname, '..', 'google-drive-subtitles'));
 var subtitleLock = {};
 var ONE_HOUR = 60 * 60 * 1000;
 var ONE_DAY = 24 * ONE_HOUR;

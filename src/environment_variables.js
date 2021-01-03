@@ -26,6 +26,9 @@ const CONFIG_ENV_ALTERNATIVES = {
     "ffmpeg.js": {
         "ffmpeg.log": "CYTUBE_FFMPEGLOG_LOCATION"
     },
+    "google2vtt.js": {
+        "google-drive-subtitles": "CYTUBE_GOOGLE_DRIVE_SUBTITLES_LOCATION"
+    }
 };
 
 CONFIG_ENV_ALTERNATIVES["web/acp.js"] = {
@@ -37,11 +40,13 @@ CONFIG_ENV_ALTERNATIVES["web/acp.js"] = {
 };
 
 CONFIG_ENV_ALTERNATIVES["server.js"] = {
-    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"]
+    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"],
+    "google-drive-subtitles": CONFIG_ENV_ALTERNATIVES["google2vtt.js"]["google-drive-subtitles"]
 };
 
 CONFIG_ENV_ALTERNATIVES["setuid.js"] = {
-    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"]
+    "chanlogs": CONFIG_ENV_ALTERNATIVES["channel/channel.js"]["chanlogs"],
+    "google-drive-subtitles": CONFIG_ENV_ALTERNATIVES["google2vtt.js"]["google-drive-subtitles"]
 };
 
 function envVarFilenameOK(envVarName) {
