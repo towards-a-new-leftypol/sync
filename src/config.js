@@ -287,6 +287,7 @@ function preprocessConfig(cfg) {
     // Strip trailing slashes from domains
     cfg.https.domain = cfg.https.domain.replace(/\/*$/, "");
 
+    /* */
     // Socket.IO URLs
     cfg.io["ipv4-nossl"] = "";
     cfg.io["ipv4-ssl"] = "";
@@ -321,7 +322,7 @@ function preprocessConfig(cfg) {
                 if (srv.url) {
                     cfg.io["ipv4-nossl"] = srv.url;
                 } else {
-                    cfg.io["ipv4-nossl"] = cfg.io["domain"] + ":" + srv.port;
+                    cfg.io["ipv4-nossl"] = cfg.io["domain"];
                 }
             }
         }
